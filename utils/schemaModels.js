@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 const TodoSchema = new Schema({
   todo: String,
   done: Boolean,
+  email: String,
 });
 
 const UserSchema = new Schema({
@@ -14,6 +15,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  name: {
+    type: String,
+    required: true,
   },
   password: {
     type: String,
