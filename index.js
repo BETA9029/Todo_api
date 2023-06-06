@@ -10,13 +10,18 @@ const connectDB = require("./utils/database.js");
 const { TodoModel, UserModel } = require("./utils/schemaModels.js");
 const { emit } = require("nodemon");
 
-app.get("/:email", async (req, res) => {
+app.get("/", auth, async (req, res) => {
   try {
     await connectDB();
-    const AllTodo = await TodoModel.find({ email: req.params.email });
-    return res
-      .status(200)
-      .json({ messege: "TODO読み取り成功", alltodo: AllTodo });
+    console.log(req.headers.email);
+    const AllTodo = await TodoModel.find({ email: req.headers.email });
+    //const user = await UserModel.find({ email: req.headers.email });
+    console.log(req.headers.email);
+    return res.status(200).json({
+      messege: "TODO読み取り成功",
+      alltodo: AllTodo,
+      email: req.headers.email,
+    });
   } catch {
     return res.status(400).json({ messege: "TODO読み取り失敗" });
   }
@@ -71,6 +76,7 @@ app.post("/user/login", async (req, res) => {
     await connectDB();
     const saveUserData = await UserModel.findOne({ email: req.body.email });
 
+    console.log(!saveUserData);
     //DBにデータがなかった時の処理
     if (!saveUserData)
       return res
@@ -85,7 +91,7 @@ app.post("/user/login", async (req, res) => {
     const paylod = {
       email: req.body.email,
     };
-    const token = jwt.sign(paylod, secret_key, { expiresIn: "10m" });
+    const token = jwt.sign(paylod, secret_key, { expiresIn: "23h" });
     console.log(token);
     return res.status(200).json({ messege: "ログインに成功", token: token });
   } catch (err) {
