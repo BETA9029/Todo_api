@@ -99,6 +99,8 @@ app.post("/user/login", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("Listening on localhost port 5000");
+//Connecting to port
+const port =process.env.PORT || 5000
+app.listen(port, () => {
+  console.log(`Listening on localhost port ${port}`);
 });
