@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const secret_key = "Todo-app";
 
 const auth = async (req, res, next) => {
-  console.log(req.headers.token);
+  if(req.headers.token) return next();
   const token = await req.headers.token.split(" ")[1];
   console.log(token);
   if (!token) {
