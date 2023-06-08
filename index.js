@@ -16,12 +16,12 @@ app.get("/", auth, async (req, res) => {
     await connectDB();
     console.log(req.headers.email);
     const AllTodo = await TodoModel.find({ email: req.headers.email });
-    //const user = await UserModel.find({ email: req.headers.email });
+    const user = await UserModel.find({ email: req.headers.email });
     console.log(req.headers.email);
     return res.status(200).json({
       messege: "TODO読み取り成功",
       alltodo: AllTodo,
-      //email: req.headers.email,
+      email: req.headers.email,
     });
   } catch {
     return res.status(400).json({ messege: "TODO読み取り失敗" });
