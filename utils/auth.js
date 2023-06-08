@@ -1,11 +1,14 @@
 // utils/auth.js
 
+//送られてきたjwtを解析し有効ならnext
+
 const jwt = require("jsonwebtoken");
 
 const secret_key = "Todo-app";
 
 const auth = async (req, res, next) => {
-  if(!req.headers.token) return res.status(400).json({ message: "トークンがありません" });;
+  if (!req.headers.token)
+    return res.status(400).json({ message: "トークンがありません" });
   const token = await req.headers.token.split(" ")[1];
   console.log(token);
   if (!token) {

@@ -10,6 +10,7 @@ const connectDB = require("./utils/database.js");
 const { TodoModel, UserModel } = require("./utils/schemaModels.js");
 const { emit } = require("nodemon");
 
+//getリクエストに対してjwtが有効ならそのユーザのtodoを返す
 app.get("/", auth, async (req, res) => {
   try {
     await connectDB();
@@ -20,13 +21,14 @@ app.get("/", auth, async (req, res) => {
     return res.status(200).json({
       messege: "TODO読み取り成功",
       alltodo: AllTodo,
-      email: req.headers.email,
+      //email: req.headers.email,
     });
   } catch {
     return res.status(400).json({ messege: "TODO読み取り失敗" });
   }
 });
 
+//新たなtodoをdbに追加
 app.post("/create", async (req, res) => {
   try {
     await connectDB();
@@ -38,6 +40,7 @@ app.post("/create", async (req, res) => {
   }
 });
 
+//指定されたtodoの変更をdbに追加
 app.put("/update/:id", async (req, res) => {
   try {
     await connectDB();
@@ -49,6 +52,7 @@ app.put("/update/:id", async (req, res) => {
   }
 });
 
+//指定されたtodoをdbから削除
 app.delete("/delete/:id", async (req, res) => {
   try {
     await connectDB();
@@ -60,6 +64,7 @@ app.delete("/delete/:id", async (req, res) => {
   }
 });
 
+//新たなユーザをdbに追加、emailがユニークになっているので、既に存在していたら失敗する
 app.post("/user/register", async (req, res) => {
   try {
     await connectDB();
@@ -70,6 +75,7 @@ app.post("/user/register", async (req, res) => {
   }
 });
 
+//ユーザのログイン機能。送られてきたユーザデータが正しかったら、jwtを返す
 app.post("/user/login", async (req, res) => {
   try {
     const secret_key = "Todo-app";
@@ -100,7 +106,7 @@ app.post("/user/login", async (req, res) => {
 });
 
 //Connecting to port
-const port =process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Listening on localhost port ${port}`);
 });
